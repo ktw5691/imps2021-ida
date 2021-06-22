@@ -72,35 +72,56 @@ class: inverse center middle
 
 # What is Integrative Data Analysis?
 
-## Advantages of IDA
-
-## IDA in Practice
-
----
-
-class: center middle
-
-# IDA
-
----
-
-# IDA
-
-+ Definition
-
---
-
 ## Advantages
 
-+ point
+## Current Practice
+
+---
+
+# Integrative Data Analysis (IDA)
+
+> Integrative data analysis (IDA) simultaneously analyzes the *participant-level* data from multiple studies (Curran & Hussong, 2009)
 
 --
 
-+ point
++ Also known as
+  + individual participant meta-analysis (Cooper & Patall, 2009)
+  + individual patient data meta-analysis (Stewart & Tierney, 2002)
+  + mega-analysis (McArdle et al., 2009)
+  + data fusion (Marcoulides & Grimm, 2017)
+
+---
+
+# Advantages of IDA
+
+.footnote[(Bauer & Hussong, 2009; Curran et al., 2018; Curran &
+Hussong, 2009; Marcoulides & Grimm, 2017; McArdle et al.,
+2009; Stewart & Tierney, 2002)]
 
 --
 
-+ point
++ Directly assess the replicability of effects across studies and populations
+
+--
+
++ Use of multiple samples introduces and allows modeling of between-sample heterogeneity
+
+--
+
++ Can fit more complex models and answer new research questions
+
+--
+
++ Longitudinal analysis of longer timespans is often possible
+
+--
+
++ Improved harmonic measurements
+
+???
+
++ Point 2: resulting in better external validity than a single study and an understanding
+of the sources of between-study heterogeneity
 
 ---
 
@@ -120,27 +141,94 @@ class: inverse center middle
 
 ---
 
-# Aggregated Regression
+# Regression and Disaggregation
+
+class: center middle
 
 --
 
-+ something
+.pull-left[
+## Aggregated Regression
+
+$$\begin{split} y_{ij} &= \gamma_{00} + \gamma_A x_{ij} + e_{ij} \\
+    e_{ij} &\sim \text{N} \left(0, \sigma^2_e \right)
+  \end{split}$$
+]
+
+--
+
+.pull-right[
+## Disaggregated Regression
+
+$$\begin{split}
+    y_{ij} &= \gamma_{00}^{*} + \gamma_B \bar{x}_j + \gamma_W \left( x_{ij} - \bar{x}_j \right) + e_{ij} \\
+    e_{ij} &\sim \text{N} \left(0, \sigma^2_e \right)
+  \end{split}$$
+]
 
 ---
 
-# Disaggregated Regression
+# Regression and Mean Heterogeneity
+
+--
+
+## Study-Specific Coefficients Regression
+
+--
+
+\begin{equation}
+  \begin{split}
+    y_{ij} &= \sum_{k=1}^J \gamma_{0k} I(k = j) + \gamma_W x_{ij} + e_{ij} \\
+    e_{ij} &\sim \text{N} \left(0, \sigma^2_e \right)
+  \end{split}
+  \label{eq:fixed-ssc}
+\end{equation}
 
 ---
 
-# Study-Specific Coefficients Regression
+# Multilevel Models
+
+## Fixed Slope Multilevel Model
+
+--
+
++ Extend the disaggregated regression model to incorporate between-study heterogeneity
+
+--
+
+\begin{equation}
+  \begin{split}
+    \text{Level 1: } y_{ij} &= \beta_{0j} +
+                               \beta_{1j} \left( x_{ij} - \bar{x}_j \right) +
+                               e_{ij} \\
+    \text{Level 2: } \beta_{0j} &= \gamma_{00} + \gamma_{B} \bar{x}_j + u_{0j} \\
+                     \beta_{1j} &= \gamma_{W} \\
+                     \begin{bmatrix} \vec{e}_{j} \\ u_{0j} \end{bmatrix} &\sim \text{N}\left( \begin{bmatrix} \vec{0} \\ 0 \end{bmatrix}, \begin{bmatrix} \sigma^2_e \vec{I}_{n_j} & 0 \\ 0 & \sigma^2_{u_0} \end{bmatrix} \right)
+  \end{split}
+  \label{eq:fixed}
+\end{equation}
 
 ---
 
-# Fixed Slope Multilevel Model
+## Random Slopes Multilevel Model
 
----
+--
 
-# Random Slopes Multilevel Model
++ Extend the disaggregated regression model to incorporate between-study heterogeneity
+
+--
+
+\begin{equation}
+  \begin{split}
+    \text{Level 1: } y_{ij} &= \beta_{0j} +
+                               \beta_{1j} \left( x_{ij} - \bar{x}_j \right) +
+                               e_{ij} \\
+    \text{Level 2: } \beta_{0j} &= \gamma_{00} + \gamma_{B} \bar{x}_j + u_{0j} \\
+                     \beta_{1j} &= \gamma_{W} + u_{1j} \\
+                     \begin{bmatrix} \vec{e}_{j} \\ u_{0j} \\ u_{1j} \end{bmatrix} &\sim \text{N}\left( \begin{bmatrix} \vec{0} \\ 0 \\ 0 \end{bmatrix}, \begin{bmatrix} \sigma^2_e \vec{I}_{n_j} & 0 & 0 \\ 0 & \sigma^2_{u_0} & \sigma_{u_{01}} \\ 0 & \sigma_{u_{01}} & \sigma^2_{u_1} \end{bmatrix} \right)
+  \end{split}
+  \label{eq:random}
+\end{equation}
 
 ---
 
