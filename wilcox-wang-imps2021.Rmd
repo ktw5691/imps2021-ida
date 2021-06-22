@@ -1,0 +1,185 @@
+---
+title: "Modeling approaches for cross-sectional integrative data analysis"
+subtitle: "Evaluations and recommendations"
+author: "Kenneth Tyler Wilcox & Lijuan Wang"
+institute: "Department of Psychology, University of Notre Dame"
+date: "IMPS, 21 July 2021"
+output:
+  xaringan::moon_reader:
+    css: xaringan-themer.css
+    self_contained: false # if true, fonts will be stored locally
+    lib_dir: libs
+    chakra: libs/remark-latest.min.js # Use offline
+    nature:
+      slideNumberFormat: "%current%"
+      beforeInit: "macros.js"
+      highlightStyle: github
+      highlightLines: true
+      ratio: 16:9
+      countIncrementalSlides: false
+---
+
+```{r setup, include=FALSE}
+here::i_am("wilcox-wang-imps2021.Rmd")
+options(htmltools.dir.version = FALSE) # Default in xaringanthemer template; don't know what this does
+knitr::opts_chunk$set(
+  fig.width = 8, fig.height = 4.5, fig.retina = 2, # fig.retina = 2 for most Retina displays (https://yihui.org/knitr/options/#plots)
+  dpi = 300,
+  out.width = "100%",
+  cache = FALSE,
+  echo = TRUE,
+  message = FALSE, 
+  warning = FALSE,
+  fig.show = TRUE,
+  hiline = TRUE
+)
+```
+
+```{r xaringan-themer, include=FALSE, warning=FALSE}
+library(latex2exp)
+library(rlang)
+library(stringr)
+library(purrr)
+library(readr)
+library(dplyr)
+library(ggplot2)
+library(xaringanthemer)
+library(here)
+
+# Color codes from Nord theme: https://www.nordtheme.com
+style_mono_light(
+  base_color       = "#2E3440",
+  header_font_google  = google_font("Fira Sans", "400"),
+  # header_font_google  = google_font("Roboto", "400"),
+  header_h1_font_size = "2.25rem",
+  header_h2_font_size = "1.5rem",
+  header_h3_font_size = "1.25rem",
+  # text_font_google    = google_font("Fira Sans", "300", "300i"),
+  text_font_google    = google_font("Roboto", "300", "300i"),
+  text_font_size      = "1.25rem", 
+  code_font_google    = google_font("Fira Code Retina"),
+  header_background_auto = TRUE,
+  # title_slide_background_image = "figures/",
+  title_slide_background_size = "50%",
+  title_slide_background_position = "50% 95%",
+  title_slide_background_color = "#ECEFF4", # white
+  title_slide_text_color = "#2E3440"
+)
+options(crayon.enabled = TRUE)
+```
+
+class: inverse center middle
+
+# What is Integrative Data Analysis?
+
+## Advantages of IDA
+
+## IDA in Practice
+
+---
+
+class: center middle
+
+# IDA
+
+---
+
+# IDA
+
++ Definition
+
+--
+
+## Advantages
+
++ point
+
+--
+
++ point
+
+--
+
++ point
+
+---
+
+class: inverse center middle
+
+# Five IDA Models
+
+## Aggregated Regression
+
+## Disaggregated Regression
+
+## Study-Specific Coefficients Regression
+
+## Fixed Slope Multilevel Model
+
+## Random Slopes Multilevel Model
+
+---
+
+# Aggregated Regression
+
+--
+
++ something
+
+---
+
+# Disaggregated Regression
+
+---
+
+# Study-Specific Coefficients Regression
+
+---
+
+# Fixed Slope Multilevel Model
+
+---
+
+# Random Slopes Multilevel Model
+
+---
+
+class: inverse center middle
+
+# Research Questions
+
+## Simulation Design
+
+## RQ1
+
+## RQ2
+
+## RQ3
+
+---
+
+class: inverse center middle
+
+# Recommendations
+
+---
+
+# Recommendations
+
++ Don't use ALR
+
++ FE models don't control type I error rate for either fixed effect with heterogeneity
+
++ RS MLM can yield well-controlled type I error rates for both fixed effects with appropriate DDFM even in small samples
+
+---
+
+# Conclusions
+
++ Carefully consider the assumptions involved in any IDA model
+
++ Suggests consideration of methods like MLMs that directly account for this heterogeneity.
+
+---
+
+# References
