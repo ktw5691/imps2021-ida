@@ -12,7 +12,6 @@ output:
     chakra: libs/remark-latest.min.js # Use offline
     nature:
       slideNumberFormat: "%current%"
-      beforeInit: "macros.js"
       highlightStyle: github
       highlightLines: true
       ratio: 16:9
@@ -57,7 +56,7 @@ style_mono_light(
   # text_font_google    = google_font("Fira Sans", "300", "300i"),
   text_font_google    = google_font("Roboto", "300", "300i"),
   text_font_size      = "1.25rem", 
-  code_font_google    = google_font("Fira Code Retina"),
+  code_font_google    = google_font("Fira Code"),
   header_background_auto = TRUE,
   # title_slide_background_image = "figures/",
   title_slide_background_size = "50%",
@@ -125,25 +124,59 @@ of the sources of between-study heterogeneity
 
 ---
 
-class: inverse center middle
+# Current Practice of IDA in Psychology
 
-# Five IDA Models
++ PsycINFO literature search: 1988--2020
 
-## Aggregated Regression
+--
 
-## Disaggregated Regression
+```{r, echo = FALSE, out.width="60%"}
+lit_df <- tibble(time = c("1988-1989", "1990-1999", "2000-2009", "2010-2019"),
+                 `# Articles` = c(3, 9, 57, 343))
+lit_df %>% 
+  ggplot(aes(time, `# Articles`, group = 1)) +
+  geom_point() +
+  geom_line() +
+  theme_bw() +
+  scale_x_discrete("") +
+  theme(panel.grid.minor.y = element_blank(),
+        panel.grid.minor.x = element_blank()) +
+  theme_xaringan(text_font_size = 24)
+```
 
-## Study-Specific Coefficients Regression
+--
 
-## Fixed Slope Multilevel Model
-
-## Random Slopes Multilevel Model
++ 91% of 421 articles used fixed-effects models; minimal disaggregation
 
 ---
 
-# Regression and Disaggregation
+class: inverse center middle
 
-class: center middle
+# Research Questions
+
+## 1. What Models Can Disaggregate Participant- and Study-Level Effects?
+
+## 2. How Do We Account for Between-Study Heterogeneity?
+
+## 3. What Methods Work in IDA Small Sample Scenarios?
+
+---
+
+class: inverse center middle
+
+# IDA Models
+
+## Regression
+
+## Disaggregating Participant- and Study-Level Effects
+
+## Between-Study Heterogeneity of Means
+
+## Between-Study Heterogeneity of Means and Participant-Level Effects
+
+---
+
+# Disaggregated Participant- and Study-Level Effects
 
 --
 
@@ -153,6 +186,12 @@ class: center middle
 $$\begin{split} y_{ij} &= \gamma_{00} + \gamma_A x_{ij} + e_{ij} \\
     e_{ij} &\sim \text{N} \left(0, \sigma^2_e \right)
   \end{split}$$
+
++ $\gamma_A$ conflates participant- and study-level fixed effects as a weighted function of the intrastudy correlation
+
+  + $\gamma_A = (1- \lambda) \gamma_W + \lambda \gamma_B$
+
++ Popular in application
 ]
 
 --
@@ -164,11 +203,23 @@ $$\begin{split}
     y_{ij} &= \gamma_{00}^{*} + \gamma_B \bar{x}_j + \gamma_W \left( x_{ij} - \bar{x}_j \right) + e_{ij} \\
     e_{ij} &\sim \text{N} \left(0, \sigma^2_e \right)
   \end{split}$$
+
++ $\gamma_B$: study-level fixed effect
+
++ $\gamma_W$: average participant-level fixed effect
 ]
+
+--
+
+.center[
+Sources of between-study heterogeneity are *ignored*
+]
+
+.footnote[(Hamaker & Muthén, 2020; Neuhaus & Kalbfleisch, 1998; Raudenbush & Bryk, 2002)]
 
 ---
 
-# Regression and Mean Heterogeneity
+# Between-Study Heterogeneity of Means
 
 --
 
@@ -176,73 +227,142 @@ $$\begin{split}
 
 --
 
-\begin{equation}
-  \begin{split}
++ Extend disaggregated regression model to model mean heterogeneity
+
+$$\begin{split}
     y_{ij} &= \sum_{k=1}^J \gamma_{0k} I(k = j) + \gamma_W x_{ij} + e_{ij} \\
     e_{ij} &\sim \text{N} \left(0, \sigma^2_e \right)
-  \end{split}
-  \label{eq:fixed-ssc}
-\end{equation}
+  \end{split}$$
+
+--
+
++ *Cannot* include study-level effect of $\bar{x}_j$
+
+--
+
++ Accounts for between-study heterogeneity in study outcome means $\bar{y}_j$
+
+.footnote[(Curran & Husson, 2009)]
 
 ---
 
-# Multilevel Models
+# Between-Study Heterogeneity of Means
 
 ## Fixed Slope Multilevel Model
 
 --
 
-+ Extend the disaggregated regression model to incorporate between-study heterogeneity
++ Extend the disaggregated regression model to model mean heterogeneity
 
 --
 
-\begin{equation}
-  \begin{split}
+$$\begin{split}
     \text{Level 1: } y_{ij} &= \beta_{0j} +
                                \beta_{1j} \left( x_{ij} - \bar{x}_j \right) +
                                e_{ij} \\
     \text{Level 2: } \beta_{0j} &= \gamma_{00} + \gamma_{B} \bar{x}_j + u_{0j} \\
                      \beta_{1j} &= \gamma_{W} \\
                      \begin{bmatrix} \vec{e}_{j} \\ u_{0j} \end{bmatrix} &\sim \text{N}\left( \begin{bmatrix} \vec{0} \\ 0 \end{bmatrix}, \begin{bmatrix} \sigma^2_e \vec{I}_{n_j} & 0 \\ 0 & \sigma^2_{u_0} \end{bmatrix} \right)
-  \end{split}
-  \label{eq:fixed}
-\end{equation}
+  \end{split}$$
+
+--
+
++ $\sigma^2_{u_0}$: between-study variance in study conditional means $\gamma_{00} + u_{0j}$
+
+--
+
++ More parsimonious than the SSC regression model at the cost of a distributional assumption
 
 ---
+
+# Heterogeneity: Means and Participant Effects
 
 ## Random Slopes Multilevel Model
 
 --
 
-+ Extend the disaggregated regression model to incorporate between-study heterogeneity
++ Extend the fixed-slope MLM to incorporate heterogeneity in (1) means *and* (2) participant-level effects
 
 --
 
-\begin{equation}
-  \begin{split}
+$$\begin{split}
     \text{Level 1: } y_{ij} &= \beta_{0j} +
                                \beta_{1j} \left( x_{ij} - \bar{x}_j \right) +
                                e_{ij} \\
     \text{Level 2: } \beta_{0j} &= \gamma_{00} + \gamma_{B} \bar{x}_j + u_{0j} \\
                      \beta_{1j} &= \gamma_{W} + u_{1j} \\
                      \begin{bmatrix} \vec{e}_{j} \\ u_{0j} \\ u_{1j} \end{bmatrix} &\sim \text{N}\left( \begin{bmatrix} \vec{0} \\ 0 \\ 0 \end{bmatrix}, \begin{bmatrix} \sigma^2_e \vec{I}_{n_j} & 0 & 0 \\ 0 & \sigma^2_{u_0} & \sigma_{u_{01}} \\ 0 & \sigma_{u_{01}} & \sigma^2_{u_1} \end{bmatrix} \right)
-  \end{split}
-  \label{eq:random}
-\end{equation}
+  \end{split}$$
+
+--
+
++ $\sigma^2_{u_1}$: between-study variance in participant-level effects
+
+---
+
+# RQ1 and RQ2: Disaggregation and Heterogeneity
+
+--
+
+```{r, echo = FALSE, fig.showtext=TRUE, fig.retina=2, fig.asp=0.5, out.width=1000, dpi=600}
+knitr::include_graphics(here("table1.png"))
+```
 
 ---
 
 class: inverse center middle
 
-# Research Questions
+# RQ3: Small Sample IDA Methods and Performance
 
-## Simulation Design
+## Underevaluated Impact of Variance Effect Sizes
 
-## RQ1
+## Underevaluated MLM Degrees of Freedom Methods for IDA
 
-## RQ2
+---
 
-## RQ3
+# Simulation Study Design
+
++ Generated data from fixed-slope and random-slopes MLMs with 1,000 replications
+
++ Unbalanced study sample sizes based on Hornburg et al. (2018)
+
++ Set parameters using proportion of variance effect sizes (Rights & Sterba, 2019)
+
++ Factors
+  + Number of studies: 2, 3, $\ldots$, 35
+  + Average study sample size: 25, 51, 101
+  + Effect size of $\gamma_B$: 0, "small", "medium"
+  + Effect size of $\gamma_W$: 0, "small", "medium"
+  + Effect size of $\sigma^2_{u_0}$: 0, "small", "medium"
+  + Effect size of $\sigma^2_{u_1}$: 0, "small", "medium"
+
++ Evaluated degrees of freedom (DF) methods in SAS Proc MIXED: Residual, Containment, Between-Within, Satterthwaite, Kenward-Roger
+
+---
+
+# Testing $\gamma_B$ Depends on DF Method and $\sigma^2_{u_0}$
+
++ Type I error rate for study-level effect affected by degree of mean heterogeneity
+  + $\sigma^2_{u_0}$ needs to be modeled: FS MLM or RS MLM
+  + Type I error rate depends on effect size of $\sigma^2_{u_0}$ and DF method
+
++ Between-Within, Satterthwaite and Kenward-Roger DF worked well with at least 5-14 studies
+  + For small $\sigma^2_{u_0}$, Satterthwaite DF needed fewer (6) studies
+  + For medium $\sigma^2_{u_0}$, Kenward-Roger DF needed fewer (5) studies
+
+---
+
+# Testing $\gamma_W$ Depends on DF Method and $\sigma^2_{u_1}$
+
++ Type I error rate for average participant-level fixed effect affected by degree of participant-level effect heterogeneity
+  + $\sigma^2_{u_1}$ needs to be modeled: RS MLM
+  + Type I error rate depends on effect size of $\sigma^2_{u_1}$ and DF method
+
++ Containment, Satterthwaite, and Kenward-Roger DF methods worked well with at least 4-15 studies
+  + Containment DF needed fewer (5 or 6) studies (see also Ferron et al., 2009)
+  + Previous research recommended Kenward-Roger DF
+
+.footnote[(Huang, 2016; Kenward & Roger, 1997; McNeish, 2017; McNeish & Stapleton, 2016; Morris et al., 2018)]
 
 ---
 
@@ -254,20 +374,31 @@ class: inverse center middle
 
 # Recommendations
 
-+ Don't use ALR
++ Disaggregate participant-level and study-level fixed effects
 
-+ FE models don't control type I error rate for either fixed effect with heterogeneity
++ Carefully consider and model sources of between-study heterogeneity
 
-+ RS MLM can yield well-controlled type I error rates for both fixed effects with appropriate DDFM even in small samples
+  + Failing to do so can yield incorrect type I error rates for both kinds of fixed effects
+
++ With a small number of studies, random-slopes MLM can yield accurate estimates and well-controlled type I error rates for both types of fixed effects
+
+  + Appropriate degrees of freedom methods are critical
+  
+  + Kenward-Roger (1997) DF for study-level fixed effect
+  
+  + Containment DF for participant-level fixed effect
+
++ Overall, MLM is a viable option for IDA with even as few as six studies
 
 ---
 
-# Conclusions
+# Thanks!
 
-+ Carefully consider the assumptions involved in any IDA model
-
-+ Suggests consideration of methods like MLMs that directly account for this heterogeneity.
-
----
-
-# References
+.center[
+### `r icon::fa("paper-plane")` kwilcox3@nd.edu
+### [`r icon::ii("earth")` www.ktylerwilcox.me](https://www.ktylerwilcox.me)
+### [`r icon::fa("link")` Slides:](https://www.ktylerwilcox.me/talk/2021-imps-ida/)
+#### https://www.ktylerwilcox.me/talk/2021-imps-ida/
+### Paper:
+Wilcox, K. T., & Wang, L. (In press). Modeling approaches for cross-sectional integrative data analysis: Evaluations and recommendations. *Psychological Methods*. https://doi.org/10.1037/met0000397
+]
