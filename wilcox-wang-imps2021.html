@@ -34,6 +34,8 @@ class: inverse center middle
 
 ## Current Practice
 
+## Participant-Level and Study-Level Effects
+
 ---
 
 # Integrative Data Analysis (IDA)
@@ -97,6 +99,66 @@ of the sources of between-study heterogeneity
 
 ---
 
+class: center
+
+# Participant-Level and Study-Level Effects
+
+--
+
+## Participant-Level Effects per Study
+
+
+
+&lt;img src="wilcox-wang-imps2021_files/figure-html/unnamed-chunk-3-1.png" width="40%" /&gt;
+
+--
+
+Average participant-level effect of `\(X\)` on `\(Y\)`: `\(\gamma_W\)` (dot-dashed/purple line)
+
+--
+
+Variability of intercepts `\(\rightarrow\)` `\(\sigma^2_{u_0}\)`
+
+--
+
+Variability of slopes `\(\rightarrow\)` `\(\sigma^2_{u_1}\)`
+
+---
+
+class: center
+
+# Participant-Level and Study-Level Effects
+
+## Study-Level Effect
+
+&lt;img src="wilcox-wang-imps2021_files/figure-html/unnamed-chunk-4-1.png" width="50%" /&gt;
+
+--
+
+Study-level effect of `\(\bar{X}\)` on `\(\bar{Y}\)`: `\(\gamma_B\)` (dotted/red line)
+
+---
+
+class: center
+
+# Participant-Level and Study-Level Effects
+
+## Failure to Disaggregate
+
+--
+
+&lt;img src="wilcox-wang-imps2021_files/figure-html/unnamed-chunk-5-1.png" width="50%" /&gt;
+
+--
+
+Aggregated effect: `\(\gamma_A\)` (dashed/blue line)
+
+--
+
+"An uninterpretable blend" (Raudenbush &amp; Bryk, 2002, p. 138) of `\(\gamma_W\)` and `\(\gamma_B\)`
+
+---
+
 class: inverse center middle
 
 # Research Questions
@@ -113,17 +175,19 @@ class: inverse center middle
 
 # IDA Models
 
-## Regression
+## Aggregated Regression
 
-## Disaggregating Participant- and Study-Level Effects
+## Disaggregated Regression
 
-## Between-Study Heterogeneity of Means
+## Study-Specific Coefficients Regression
 
-## Between-Study Heterogeneity of Means and Participant-Level Effects
+## Fixed-Slope Multilevel Model
+
+## Random-Slopes Multilevel Model
 
 ---
 
-# Disaggregated Participant- and Study-Level Effects
+# Aggregated vs. Disaggregated Regression
 
 --
 
@@ -166,15 +230,11 @@ Sources of between-study heterogeneity are *ignored*
 
 ---
 
-# Between-Study Heterogeneity of Means
+# Study-Specific Coefficients Regression
 
 --
 
-## Study-Specific Coefficients Regression
-
---
-
-+ Extend disaggregated regression model to model mean heterogeneity
++ Extends disaggregated regression model to model **mean heterogeneity**
 
 `$$\begin{split}
     y_{ij} &amp;= \sum_{k=1}^J \gamma_{0k} I(k = j) + \gamma_W x_{ij} + e_{ij} \\
@@ -193,13 +253,11 @@ Sources of between-study heterogeneity are *ignored*
 
 ---
 
-# Between-Study Heterogeneity of Means
-
-## Fixed Slope Multilevel Model
+# Fixed-Slope Multilevel Model
 
 --
 
-+ Extend the disaggregated regression model to model mean heterogeneity
++ Extends the disaggregated regression model to model **mean heterogeneity**
 
 --
 
@@ -214,7 +272,7 @@ Sources of between-study heterogeneity are *ignored*
 
 --
 
-+ `\(\sigma^2_{u_0}\)`: between-study variance in study conditional means `\(\gamma_{00} + u_{0j}\)`
++ `\(\sigma^2_{u_0}\)`: between-study variance in study conditional means
 
 --
 
@@ -222,13 +280,11 @@ Sources of between-study heterogeneity are *ignored*
 
 ---
 
-# Heterogeneity: Means and Participant Effects
-
-## Random Slopes Multilevel Model
+# Random-Slopes Multilevel Model
 
 --
 
-+ Extend the fixed-slope MLM to incorporate heterogeneity in (1) means *and* (2) participant-level effects
++ Extend the fixed-slope MLM to incorporate **heterogeneity in (1) means and (2) participant-level effects**
 
 --
 
@@ -288,7 +344,7 @@ class: inverse center middle
 # Testing `\(\gamma_B\)` Depends on DF Method and `\(\sigma^2_{u_0}\)`
 
 + Type I error rate for study-level effect affected by degree of mean heterogeneity
-  + `\(\sigma^2_{u_0}\)` needs to be modeled: FS MLM or RS MLM
+  + `\(\sigma^2_{u_0}\)` needs to be modeled if `\(\sigma^2_{u_0} &gt; 0\)`: FS MLM or RS MLM
   + Type I error rate depends on effect size of `\(\sigma^2_{u_0}\)` and DF method
 
 + Between-Within, Satterthwaite and Kenward-Roger DF worked well with at least 5-14 studies
@@ -300,7 +356,7 @@ class: inverse center middle
 # Testing `\(\gamma_W\)` Depends on DF Method and `\(\sigma^2_{u_1}\)`
 
 + Type I error rate for average participant-level fixed effect affected by degree of participant-level effect heterogeneity
-  + `\(\sigma^2_{u_1}\)` needs to be modeled: RS MLM
+  + `\(\sigma^2_{u_1}\)` needs to be modeled if `\(\sigma^2_{u_1} &gt; 0\)`: RS MLM
   + Type I error rate depends on effect size of `\(\sigma^2_{u_1}\)` and DF method
 
 + Containment, Satterthwaite, and Kenward-Roger DF methods worked well with at least 4-15 studies
@@ -323,17 +379,14 @@ class: inverse center middle
 
 + Carefully consider and model sources of between-study heterogeneity
 
-  + Failing to do so can yield incorrect type I error rates for both kinds of fixed effects
+  + Failing to do so can yield incorrect type I error rates for one or both levels of fixed effects
 
 + With a small number of studies, random-slopes MLM can yield accurate estimates and well-controlled type I error rates for both types of fixed effects
-
   + Appropriate degrees of freedom methods are critical
-  
-  + Kenward-Roger (1997) DF for study-level fixed effect
-  
-  + Containment DF for participant-level fixed effect
+      + Kenward-Roger (1997) DF for study-level fixed effect
+      + Containment DF for participant-level fixed effect
 
-+ Overall, MLM is a viable option for IDA with even as few as six studies
++ Overall, MLM can be a viable option for IDA with even as few as six studies
 
 ---
 
