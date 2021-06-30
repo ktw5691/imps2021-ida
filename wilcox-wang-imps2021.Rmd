@@ -484,8 +484,8 @@ class: inverse center middle
 .center[
 ### `r icon::fa("paper-plane")` kwilcox3@nd.edu
 ### [`r icon::ii("earth")` www.ktylerwilcox.me](https://www.ktylerwilcox.me)
-### [`r icon::fa("link")` Slides:](https://www.ktylerwilcox.me/talk/2021-imps-ida/)
-#### https://www.ktylerwilcox.me/talk/2021-imps-ida/
+### [`r icon::fa("link")` Slides:](https://www.ktylerwilcox.me/slides/2021imps-wilcox-wang-slides.pdf)
+#### https://www.ktylerwilcox.me/slides/2021imps-wilcox-wang-slides.pdf
 ### Paper:
 Wilcox, K. T., & Wang, L. (In press). Modeling approaches for cross-sectional integrative data analysis: Evaluations and recommendations. *Psychological Methods*. https://doi.org/10.1037/met0000397
 ]
