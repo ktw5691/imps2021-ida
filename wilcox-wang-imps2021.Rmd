@@ -102,11 +102,11 @@ Hussong, 2009; Marcoulides & Grimm, 2017; McArdle et al.,
 
 --
 
-+ Directly assess the replicability of effects across studies and populations
++ Use of multiple samples introduces and allows modeling of between-sample heterogeneity
 
 --
 
-+ Use of multiple samples introduces and allows modeling of between-sample heterogeneity
++ Directly assess the replicability of effects across studies and populations
 
 --
 
@@ -131,8 +131,6 @@ of the sources of between-study heterogeneity
 
 + PsycINFO literature search: 1988--2020
 
---
-
 ```{r, echo = FALSE, out.width="60%"}
 lit_df <- tibble(time = c("1988-1989", "1990-1999", "2000-2009", "2010-2019"),
                  `# Articles` = c(3, 9, 57, 343))
@@ -156,8 +154,6 @@ lit_df %>%
 class: center
 
 # Participant-Level and Study-Level Effects
-
---
 
 ## Participant-Level Effects per Study
 
@@ -206,8 +202,6 @@ gg_ipd_ad_agg <- gg_ipd_ad +
 gg_ipd + theme_xaringan(text_font_size = 24)
 ```
 
---
-
 Average participant-level effect of $X$ on $Y$: $\gamma_W$ (dot-dashed/purple line)
 
 --
@@ -230,8 +224,6 @@ class: center
 gg_ipd_ad + theme_xaringan(text_font_size = 24)
 ```
 
---
-
 Study-level effect of $\bar{X}$ on $\bar{Y}$: $\gamma_B$ (dotted/red line)
 
 ---
@@ -248,11 +240,7 @@ class: center
 gg_ipd_ad_agg + theme_xaringan(text_font_size = 24)
 ```
 
---
-
 Aggregated effect: $\gamma_A$ (dashed/blue line)
-
---
 
 "An uninterpretable blend" (Raudenbush & Bryk, 2002, p. 138) of $\gamma_W$ and $\gamma_B$
 
@@ -348,7 +336,7 @@ $$\begin{split}
 
 + Accounts for between-study heterogeneity in study outcome means $\bar{y}_j$
 
-.footnote[(Curran & Husson, 2009)]
+.footnote[(Curran & Hussong, 2009)]
 
 ---
 
@@ -461,8 +449,8 @@ class: inverse center middle
   + Type I error rate depends on effect size of $\sigma^2_{u_1}$ and DF method
 
 + Containment, Satterthwaite, and Kenward-Roger DF methods worked well with at least 4-15 studies
-  + Containment DF needed fewer (5 or 6) studies (see also Ferron et al., 2009)
   + Previous research recommended Kenward-Roger DF
+  + Containment DF needed fewer (5 or 6) studies (see also Ferron et al., 2009)
 
 .footnote[(Huang, 2016; Kenward & Roger, 1997; McNeish, 2017; McNeish & Stapleton, 2016; Morris et al., 2018)]
 
