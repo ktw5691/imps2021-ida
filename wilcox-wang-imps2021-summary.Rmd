@@ -1,0 +1,208 @@
+---
+title: "Modeling approaches for cross-sectional integrative data analysis"
+subtitle: "Evaluations and recommendations"
+author: "Kenneth Tyler Wilcox & Lijuan Wang"
+institute: "Department of Psychology, University of Notre Dame"
+date: "IMPS, 21 July 2021"
+output:
+  xaringan::moon_reader:
+    css: xaringan-themer.css
+    self_contained: false # if true, fonts will be stored locally
+    lib_dir: libs
+    chakra: libs/remark-latest.min.js # Use offline
+    nature:
+      slideNumberFormat: "%current%"
+      highlightStyle: github
+      highlightLines: true
+      ratio: 16:9
+      countIncrementalSlides: false
+---
+
+```{r setup, include=FALSE}
+here::i_am("wilcox-wang-imps2021.Rmd")
+options(htmltools.dir.version = FALSE) # Default in xaringanthemer template; don't know what this does
+knitr::opts_chunk$set(
+  fig.width = 8, fig.height = 4.5, fig.retina = 2, # fig.retina = 2 for most Retina displays (https://yihui.org/knitr/options/#plots)
+  dpi = 300,
+  out.width = "100%",
+  cache = FALSE,
+  echo = TRUE,
+  message = FALSE, 
+  warning = FALSE,
+  fig.show = TRUE,
+  hiline = TRUE
+)
+```
+
+```{r xaringan-themer, include=FALSE, warning=FALSE}
+library(latex2exp)
+library(rlang)
+library(stringr)
+library(purrr)
+library(readr)
+library(dplyr)
+library(ggplot2)
+library(mvtnorm)
+library(xaringanthemer)
+library(here)
+
+# Color codes from Nord theme: https://www.nordtheme.com
+style_mono_light(
+  base_color       = "#2E3440",
+  header_font_google  = google_font("Fira Sans", "400"),
+  # header_font_google  = google_font("Roboto", "400"),
+  header_h1_font_size = "2.25rem",
+  header_h2_font_size = "1.5rem",
+  header_h3_font_size = "1.25rem",
+  # text_font_google    = google_font("Fira Sans", "300", "300i"),
+  text_font_google    = google_font("Roboto", "300", "300i"),
+  text_font_size      = "1.25rem", 
+  code_font_google    = google_font("Fira Code"),
+  header_background_auto = TRUE,
+  # title_slide_background_image = "figures/",
+  title_slide_background_size = "50%",
+  title_slide_background_position = "50% 95%",
+  title_slide_background_color = "#ECEFF4", # white
+  title_slide_text_color = "#2E3440"
+)
+options(crayon.enabled = TRUE)
+```
+
+# Integrative Data Analysis (IDA)
+
+> Integrative data analysis (IDA) simultaneously analyzes the *participant-level* data from multiple studies (Curran & Hussong, 2009)
+
+.pull-left[
+
+```{r, echo = FALSE, out.width="100%"}
+lit_df <- tibble(time = c("1988-1989", "1990-1999", "2000-2009", "2010-2019"),
+                 `# Articles` = c(3, 9, 57, 343))
+lit_df %>% 
+  ggplot(aes(time, `# Articles`, group = 1)) +
+  geom_point() +
+  geom_line() +
+  theme_bw() +
+  scale_x_discrete("") +
+  theme(panel.grid.minor.y = element_blank(),
+        panel.grid.minor.x = element_blank()) +
+  theme_xaringan(text_font_size = 24)
+```
+]
+.pull-right[
++ 91% used fixed-effects models
+
++ Minimal disaggregation
+
++ But what are we estimating and testing?
+]
+
+---
+
+# Participant-Level and Study-Level Effects
+
+```{r, echo = FALSE, message = FALSE, cache = TRUE}
+source(here("sim-data-functions.R"))
+
+set.seed(333)
+nstudy <- 7
+lst_sim <- sim_ida(J = nstudy, nj = rep(30, nstudy), gamma_00 = 0, beta_w = 1, beta_b = -1, sigma2_u0 = 1, sigma2_u1 = 0.5, sigma_u01 = 0)
+dat_sim <- lst_sim$data
+
+temp <- dat_sim %>% 
+  distinct(x, k, xbar, beta_0k, beta_1k, delta_ik) %>% 
+  mutate(gamma_w = 1, gamma_b = -1, gamma_00 = 0)
+tempbar <- temp %>% 
+  group_by(k) %>% 
+  summarise(dbar = mean(delta_ik)) %>% 
+  right_join(temp, by = "k") %>% 
+  distinct(k, xbar, dbar)
+
+gg_ipd <- ggplot() +
+  scale_x_continuous("X", labels = NULL, breaks = NULL) +
+  scale_y_continuous("Y", labels = NULL, breaks = NULL) +
+  theme_bw() +
+  theme(panel.grid.minor.y = element_blank(),
+        panel.grid.minor.x = element_blank()) +
+  geom_smooth(data = temp, aes(x = x, y = delta_ik, group = k), method = "lm",
+              fill = NA, color = "black", linetype = 1, size = 1) +
+  geom_line(aes(x = temp$x, y = 0 + 1 * temp$x),
+                   xend = max(temp$x),
+                   yend = 0 + 1 * max(temp$x),
+               color = "purple", linetype = 4, size = 1)
+
+gg_ipd_ad <- gg_ipd +
+  geom_smooth(data = tempbar, aes(x = xbar, y = dbar), method = "lm",
+              fill = NA, color = "red", fullrange = FALSE, linetype = 3, size = 1)
+
+gg_ipd_ad_agg <- gg_ipd_ad +
+  geom_line(aes(x = temp$x, y = 0.07312 + (-0.10530) * temp$x),
+                   xend = max(temp$x),
+                   yend = 0.07132 + (-0.10530) * max(temp$x),
+               color = "blue", linetype = 2, size = 1)
+```
+
+.pull-left[
+
+```{r, echo = FALSE, out.width="150%"}
+gg_ipd_ad_agg + theme_xaringan(text_font_size = 24)
+```
+
++ Aggregated effect: $\gamma_A$ (dashed/blue line)
+
+> "An uninterpretable blend" of $\gamma_W$ and $\gamma_B$
+]
+.pull-right[
+
++ Average participant-level effect of $X$ on $Y \rightarrow \gamma_W$ (dot-dashed/purple line)
+
+  + Variability of intercepts $\rightarrow$ $\sigma^2_{u_0}$
+  
+  + Variability of slopes $\rightarrow$ $\sigma^2_{u_1}$
+
++ Study-level effect of $\bar{X}$ on $\bar{Y} \rightarrow \gamma_B$ (dotted/red line)
+]
+
+.footnote[(Raudenbush & Bryk, 2002, p. 138)]
+
+---
+
+class: inverse center middle
+
+# Research Questions
+
+## 1. What Models Can Disaggregate Participant- and Study-Level Effects?
+
+## 2. How Do We Account for Between-Study Heterogeneity?
+
+## 3. What Methods Work in IDA Small Sample Scenarios?
+
+---
+
+# Recommendations
+
++ Disaggregate participant-level and study-level fixed effects
+
++ Carefully consider and model sources of between-study heterogeneity
+
+  + Failing to do so can yield incorrect type I error rates for one or both levels of fixed effects
+
++ With a small number of studies, random-slopes MLM can yield accurate estimates and well-controlled type I error rates for both types of fixed effects
+  + Appropriate degrees of freedom methods are critical
+      + Kenward-Roger (1997) DF for study-level fixed effect
+      + Containment DF for participant-level fixed effect
+
++ Overall, MLM can be a viable option for IDA with even as few as six studies
+
+---
+
+# Thanks!
+
+.center[
+### `r icon::fa("paper-plane")` kwilcox3@nd.edu
+### [`r icon::ii("earth")` www.ktylerwilcox.me](https://www.ktylerwilcox.me)
+#### https://www.ktylerwilcox.me/slides/2021imps-wilcox-wang-slides.pdf
+### Paper:
+Wilcox, K. T., & Wang, L. (In press). Modeling approaches for cross-sectional integrative data analysis: Evaluations and recommendations. *Psychological Methods*. https://doi.org/10.1037/met0000397
+]
+
+.footnote[DOI is not yet live.]

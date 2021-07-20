@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Modeling approaches for cross-sectional integrative data analysis</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Kenneth Tyler Wilcox &amp; Lijuan Wang" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/font-awesome/css/fontawesome-all.min.css" rel="stylesheet" />
+    <link href="libs/ionicons/css/ionicons.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Modeling approaches for cross-sectional integrative data analysis
+## Evaluations and recommendations
+### Kenneth Tyler Wilcox &amp; Lijuan Wang
+### Department of Psychology, University of Notre Dame
+### IMPS, 21 July 2021
+
+---
+
+
+
+
+
+
+# Integrative Data Analysis (IDA)
+
+&gt; Integrative data analysis (IDA) simultaneously analyzes the *participant-level* data from multiple studies (Curran &amp; Hussong, 2009)
+
+.pull-left[
+
+&lt;img src="wilcox-wang-imps2021-summary_files/figure-html/unnamed-chunk-1-1.png" width="100%" /&gt;
+]
+.pull-right[
++ 91% used fixed-effects models
+
++ Minimal disaggregation
+
++ But what are we estimating and testing?
+]
+
+---
+
+# Participant-Level and Study-Level Effects
+
+
+
+.pull-left[
+
+&lt;img src="wilcox-wang-imps2021-summary_files/figure-html/unnamed-chunk-3-1.png" width="150%" /&gt;
+
++ Aggregated effect: `\(\gamma_A\)` (dashed/blue line)
+
+&gt; "An uninterpretable blend" of `\(\gamma_W\)` and `\(\gamma_B\)`
+]
+.pull-right[
+
++ Average participant-level effect of `\(X\)` on `\(Y \rightarrow \gamma_W\)` (dot-dashed/purple line)
+
+  + Variability of intercepts `\(\rightarrow\)` `\(\sigma^2_{u_0}\)`
+  
+  + Variability of slopes `\(\rightarrow\)` `\(\sigma^2_{u_1}\)`
+
++ Study-level effect of `\(\bar{X}\)` on `\(\bar{Y} \rightarrow \gamma_B\)` (dotted/red line)
+]
+
+.footnote[(Raudenbush &amp; Bryk, 2002, p. 138)]
+
+---
+
+class: inverse center middle
+
+# Research Questions
+
+## 1. What Models Can Disaggregate Participant- and Study-Level Effects?
+
+## 2. How Do We Account for Between-Study Heterogeneity?
+
+## 3. What Methods Work in IDA Small Sample Scenarios?
+
+---
+
+# Recommendations
+
++ Disaggregate participant-level and study-level fixed effects
+
++ Carefully consider and model sources of between-study heterogeneity
+
+  + Failing to do so can yield incorrect type I error rates for one or both levels of fixed effects
+
++ With a small number of studies, random-slopes MLM can yield accurate estimates and well-controlled type I error rates for both types of fixed effects
+  + Appropriate degrees of freedom methods are critical
+      + Kenward-Roger (1997) DF for study-level fixed effect
+      + Containment DF for participant-level fixed effect
+
++ Overall, MLM can be a viable option for IDA with even as few as six studies
+
+---
+
+# Thanks!
+
+.center[
+### <i class="fas  fa-paper-plane "></i> kwilcox3@nd.edu
+### [<i class="ion  ion-earth "></i> www.ktylerwilcox.me](https://www.ktylerwilcox.me)
+#### https://www.ktylerwilcox.me/slides/2021imps-wilcox-wang-slides.pdf
+### Paper:
+Wilcox, K. T., &amp; Wang, L. (In press). Modeling approaches for cross-sectional integrative data analysis: Evaluations and recommendations. *Psychological Methods*. https://doi.org/10.1037/met0000397
+]
+
+.footnote[DOI is not yet live.]
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="libs/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"slideNumberFormat": "%current%",
+"highlightStyle": "github",
+"highlightLines": true,
+"ratio": "16:9",
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
